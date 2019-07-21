@@ -51,8 +51,8 @@ const setMPA = () => {
 const { entry, htmlWebpackPlugins } = setMPA()
 
 module.exports = {
-  mode: 'none',
-  // mode: 'production',
+  // mode: 'none',
+  mode: 'production',
   entry,
   output: {
     path: path.join(__dirname, './dist'),
@@ -62,14 +62,14 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /.js$/,
+        test: /\.js$/,
         use: [
           'babel-loader',
           // 'eslint-loader'
         ]
       },
       {
-        test: /.css$/,
+        test: /\.css$/,
         use: [
           // 'style-loader',
           MiniCssExtractPlugin.loader,
@@ -134,7 +134,7 @@ module.exports = {
         ]
       },
       {
-        test: /.(woff|woff2|eot|ttf|otf)$/,
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
         // use: 'file-loader'
         use: [
           {
@@ -152,35 +152,9 @@ module.exports = {
       filename: '[name]_[contenthash:8].css'
     }),
     new OptimizeCssAssetsWebpackPlugin({
-      assetNameRegExp: /.css$/g,
+      assetNameRegExp: /\.css$/g,
       cssProcessor: cssnano
     }),
-    // new HtmlWebpackPlugin({
-    //   template: path.resolve(__dirname, './src/index/index.html'),
-    //   filename: 'index.html', // default index.html
-    //   chunks: ['index'],
-    //   inject: true,
-    //   minify: {
-    //     html5: true,
-    //     collapseWhitespace: true,
-    //     preserveLineBreaks: false,
-    //     minifyCSS: true,
-    //     minifyJS: true,
-    //     removeComments: false
-    //   }
-    // }),
-    // new HtmlWebpackPlugin({
-    //   template: path.resolve(__dirname, './src/search/index.html'),
-    //   filename: 'search.html',
-    //   chunks: ['search'],
-    //   inject: true,
-    //   title: 'search',
-    //   // minify: {
-    //   //   html5: true,
-    //   //   collapseWhitespace: true,
-    //   //   removeComments: true
-    //   // }
-    // }),
     // 避免构建前每次都要手动删除dist，使用clean-webpack-plugin默认会删除output指定的输出目录
     new CleanWebpackPlugin(),
     // new HtmlWebpackExternalsPlugin({
@@ -198,7 +172,7 @@ module.exports = {
     //   ]
     // }),
     // scope hoisting, webpack3需手动引入，webpack4在mode为production时默认开启
-    new webpack.optimize.ModuleConcatenationPlugin()
+    // new webpack.optimize.ModuleConcatenationPlugin()
   ].concat(htmlWebpackPlugins),
   // devtool: 'source-map',
   // optimization: {

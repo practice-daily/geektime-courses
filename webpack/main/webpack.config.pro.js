@@ -61,14 +61,14 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /.js$/,
+        test: /\.js$/,
         use: [
           'babel-loader',
           // 'eslint-loader'
         ]
       },
       {
-        test: /.css$/,
+        test: /\.css$/,
         use: [
           // 'style-loader',
           MiniCssExtractPlugin.loader,
@@ -76,7 +76,7 @@ module.exports = {
         ]
       },
       {
-        test: /.less$/,
+        test: /\.less$/,
         use: [
           // 'style-loader',
           MiniCssExtractPlugin.loader,
@@ -133,7 +133,7 @@ module.exports = {
         ]
       },
       {
-        test: /.(woff|woff2|eot|ttf|otf)$/,
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
         // use: 'file-loader'
         use: [
           {
@@ -151,7 +151,7 @@ module.exports = {
       filename: '[name]_[contenthash:8].css'
     }),
     new OptimizeCssAssetsWebpackPlugin({
-      assetNameRegExp: /.css$/g,
+      assetNameRegExp: /\.css$/g,
       cssProcessor: cssnano
     }),
     // 避免构建前每次都要手动删除dist，使用clean-webpack-plugin默认会删除output指定的输出目录
