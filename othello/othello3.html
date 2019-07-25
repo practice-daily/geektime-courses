@@ -48,19 +48,21 @@
 
     render()
 
+    // checkOnly: 默认为false，能移动吃子时就执行吃子；值为true时只检查是否能移动吃子但不执行吃子
     function move(x, y, checkOnly = false) {
       let ox = x
       let oy = y
       let canMove = false
 
+      // 有子
       if (board[y][x] !== 0) {
         console.log('有子')
         return false
       }
 
       for (let direction of directions) {
-        x = ox;
-        y = oy;
+        x = ox
+        y = oy
         let hasOpposite = false
         let directionCanMove = false
         while(true) {
@@ -107,14 +109,15 @@
         board[oy][ox] = color
         color = 3 - color
       }
-      // else {
-      //   alert(`请${color === 1 ? '黑棋' : '白棋'}重新落子`)
-      // }
 
       return canMove
     }
 
-    // 检查整个棋盘是否能走
+    /*
+     * 检查整个棋盘是否能走
+     * 8个方向只要有一个方向能移动吃子时就返回false
+     * 当8个方向都不能移动吃子时返回true，此时需要跳过异色棋子
+     */
     function checkPass() {
       for (let y = 0; y < 8; y++) {
         for (let x = 0; x < 8; x++) {
@@ -147,13 +150,14 @@
             element.appendChild(disc)
           }
           element.addEventListener('click', () => {
-            // console.log(x, y)
             move(x, y, false)
             if (checkPass()) {
-              console.log('8个方向都不能吃子，pass')
+              console.log('8个方向都不能吃子，pass，继续落子')
               color = 3 - color
               if (checkPass()) {
-                alert('Game Over')
+                setTimeout(() => {
+                  alert('Game Over')
+                }, 0)
               }
             }
             render()
