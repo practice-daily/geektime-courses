@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>黑白棋</title>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    let container = document.getElementById('container')
+    let color = 1 // 黑子先(黑1 白2)
+    let board = [
+      [0, 0, 0, 0, 0, 0 ,0 ,0],
+      [0, 0, 0, 0, 0, 0 ,0 ,0],
+      [0, 0, 0, 0, 0, 0 ,0 ,0],
+      [0, 2, 2, 2, 1, 0 ,0 ,0],
+      [0, 0, 0, 1, 2, 2 ,2 ,0],
+      [0, 0, 0, 0, 0, 0 ,0 ,0],
+      [0, 0, 0, 0, 0, 0 ,0 ,0],
+      [0, 0, 0, 0, 0, 0 ,0 ,0]
+    ]
+    render()
+    function render() {
+      container.innerHTML = ''
+
+      // y行 x列
+      for (let y = 0; y < 8; y++) {
+        for (let x = 0; x < 8; x++) {
+          let element = document.createElement('div')
+          element.style = 'display: inline-block; width: 50px; height: 50px; border: 1px solid #fff; background-color: darkgreen; vertical-align: bottom;'
+          container.appendChild(element);
+          if (board[y][x] === 1) {
+            let disc = document.createElement('div')
+            disc.style = 'width: 40px; height: 40px; margin: 5px 0 0 5px; border-radius: 20px; background-color: #000;'
+            element.appendChild(disc)
+          }
+          if (board[y][x] === 2) {
+            let disc = document.createElement('div')
+            disc.style = 'width: 40px; height: 40px; margin: 5px 0 0 5px; border-radius: 20px; background-color: #fff;'
+            element.appendChild(disc)
+          }
+          element.addEventListener('click', () => {
+            console.log('color:', color)
+            let no = board[y][x]
+            if (no) {
+              console.log('已经有子')
+              return
+            }
+
+            function left() {
+              let offset = 1;
+              while (x - offset >= 0) {
+                if (board[y][x - 1] === 0) {
+                  console.log('左边没子, 落子')
+                  board[y][x] = color
+                  break
+                } else if (board[y][x - 1] === color) {
+                  console.log('左边相邻的为同色，落子')
+                  board[y][x] = color
+                  break
+                } else if (board[y][x - 1] === 3 - color) {
+                  console.log('左边相邻的为异色')
+                  board[y][x] = color
+                  // 左边相邻的为异色，且左边间隔位置1个以上的相邻位置为同色时才能吃子
+                  // console.log('offset1:', offset)
+                  if (offset >= 2 && board[y][x - offset] === color) {
+                    // console.log('offset2:', offset)
+                    console.log('左边吃子')
+                    while(--offset >= 1) {
+                      // console.log('offset3---:', offset)
+                      board[y][x - offset] = color
+                    }
+                    break
+                  }
+                }
+                offset++
+              }
+            }
+            function right() {
+              let offset = 1
+              while (x + offset <= 7) {
+                  if (board[y][x + 1] === 0) {
+                  console.log('右边没子，落子')
+                  board[y][x] = color
+                  break
+                } else if (board[y][x + 1] === color) {
+                  console.log('右边相邻的为同色，落子')
+                  board[y][x] = color
+                  break
+                } else if (board[y][x + 1] === 3 - color) {
+                  console.log('右边相邻的为异色')
+                  board[y][x] = color
+                  // 右边相邻的为异色，且左边间隔位置1个以上的相邻位置为同色时才能吃子
+                  if (offset >= 2 && board[y][x + offset] === color) {
+                    console.log('右边吃子')
+                    while(--offset >= 1) {
+                      board[y][x + offset] = color
+                    }
+                    break
+                  }
+                }
+                offset++
+              }
+            }
+
+            left()
+            right()
+            render()
+            color = 3 - color
+          })
+        }
+        container.appendChild(document.createElement('br'))
+      }
+    }
+  </script>
+</body>
+</html>
