@@ -74,3 +74,10 @@ function add14(...rest: any[]): any {
 }
 console.log('add14:', add14(1, 2, 3, 4, 5))
 console.log('add14:', add14('1', '2', '3', '4', '5'))
+
+
+/**
+ * type类型与interface接口的区别
+ * 1. type：不创建新的类型，只是给一个类型起一个名字，比如联合类型，写起来不方便，用type定义后就很简洁，你可以把type当做一种快捷访问方式；
+ * 2. interface：创建新的类型，接口之间还可以继承（type不可以）。如果可能，建议优先使用 interface。
+ */
