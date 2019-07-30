@@ -6,7 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
-const projectRoot = process.cwd()
+const projectRoot = process.cwd();
 
 // 多页应用设置
 const setMPA = () => {
@@ -31,7 +31,7 @@ const setMPA = () => {
     entry[entryName] = entryPath;
     htmlWebpackPlugins.push(
       new HtmlWebpackPlugin({
-        template: path.resolve(projectRoot, `./src/${entryName}/index.html`),
+        template: path.join(projectRoot, `./src/${entryName}/index.html`),
         filename: `${entryName}.html`, // default index.html
         chunks: ['vendors', 'commons', entryName],
         inject: true,
