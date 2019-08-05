@@ -8,6 +8,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin')
+
+const smp = new SpeedMeasureWebpackPlugin()
 
 // 多页应用设置
 const setMPA = () => {
@@ -50,7 +53,7 @@ const setMPA = () => {
 
 const { entry, htmlWebpackPlugins } = setMPA()
 
-module.exports = {
+const config = {
   // mode: 'none',
   mode: 'production',
   entry,
@@ -172,7 +175,7 @@ module.exports = {
     // }),
     // scope hoisting, webpack3需手动引入，webpack4在mode为production时默认开启
     new webpack.optimize.ModuleConcatenationPlugin(),
-    new FriendlyErrorsWebpackPlugin(),
+    // new FriendlyErrorsWebpackPlugin(),
     function () {
       // compiler 在每次构建结束后会触发 done 这 个 hook
       this.hooks.done.tap('done', (stats) => {
@@ -190,8 +193,9 @@ module.exports = {
   /**
    * 构建时显示日志统计信息，配合插件 friendly-errors-webpack-plugin
    * stats: errors-only | minimal | none | normal | verbose
+   * 注：webpack构建分析时注释掉 插件 friendly-errors-webpack-plugin 和 stats, 可以看到更全的信息
    */
-  stats: 'errors-only',
+  // stats: 'errors-only',
   optimization: {
     /**
      * 1. 基础库分离: 使用 html-webpack- externals-plugin, 将 react、react-dom 基础包通过 cdn 引入，不打入 bundle 中
@@ -221,3 +225,5 @@ module.exports = {
     }
   }
 }
+
+module.exports = smp.wrap(config)
