@@ -8,7 +8,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+// 速度分析
 const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin')
+// 体积分析
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 const smp = new SpeedMeasureWebpackPlugin()
 
@@ -66,6 +69,13 @@ const config = {
       {
         test: /\.js$/,
         use: [
+          {
+            // 多进程多实例打包
+            loader: 'thread-loader',
+            options: {
+              workers: 3
+            }
+          },
           'babel-loader',
           // 'eslint-loader'
         ]
@@ -187,7 +197,8 @@ const config = {
           process.exit(1)
         }
       })
-    }
+    },
+    new BundleAnalyzerPlugin()
   ].concat(htmlWebpackPlugins),
   devtool: 'source-map',
   /**
