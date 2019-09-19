@@ -12,6 +12,8 @@ const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin')
 // 体积分析
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+const TerserPlugin = require('terser-webpack-plugin')
+const os = require('os')
 
 const smp = new SpeedMeasureWebpackPlugin()
 
@@ -233,8 +235,18 @@ const config = {
           chunks: 'all'
         }
       }
-    }
+    },
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        // 并行压缩
+        // Enable/disable multi-process parallel running.
+        // Use multi-process parallel running to improve the build speed. Default number of concurrent runs: os.cpus().length - 1.
+        // parallel: true
+        parallel: 4
+      })
+    ]
   }
 }
-
+console.log('os.cpus-------', os.cpus().length, os.cpus())
 module.exports = smp.wrap(config)
