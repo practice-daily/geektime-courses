@@ -66,6 +66,12 @@ const config = {
     path: path.join(__dirname, './dist'),
     filename: '[name]_[chunkhash:8].js'
   },
+  // externals: [ 'react', 'react-dom' ],
+  externals: {
+    react: "React",
+    "react-dom": "ReactDOM"
+  },
+  // externals: Object.keys(require('./package.json').dependencies) || [],
   module: {
     rules: [
       {
@@ -162,6 +168,9 @@ const config = {
     ]
   },
   plugins: [
+    // 避免构建前每次都要手动删除dist，使用clean-webpack-plugin默认会删除output指定的输出目录
+    new CleanWebpackPlugin(),
+
     new MiniCssExtractPlugin({
       filename: '[name]_[contenthash:8].css'
     }),
@@ -169,8 +178,7 @@ const config = {
       assetNameRegExp: /\.css$/g,
       cssProcessor: cssnano
     }),
-    // 避免构建前每次都要手动删除dist，使用clean-webpack-plugin默认会删除output指定的输出目录
-    new CleanWebpackPlugin(),
+
     // new HtmlWebpackExternalsPlugin({
     //   externals: [
     //     {
@@ -185,8 +193,10 @@ const config = {
     //     }
     //   ]
     // }),
+
     // scope hoisting, webpack3需手动引入，webpack4在mode为production时默认开启
-    new webpack.optimize.ModuleConcatenationPlugin(),
+    // new webpack.optimize.ModuleConcatenationPlugin(),
+
     // new FriendlyErrorsWebpackPlugin(),
     function () {
       // compiler 在每次构建结束后会触发 done 这 个 hook
@@ -200,9 +210,17 @@ const config = {
         }
       })
     },
-    new BundleAnalyzerPlugin()
+
+    // DllPlugin 结合 DllReferencePlugin 用于基础包(框架包或业务包)分包
+    new webpack.DllReferencePlugin({
+      // context: path.join(__dirname, './dll/library'),
+      context: __dirname,
+      manifest: require('./dll/library/library-manifest.json')
+    }),
+
+    // new BundleAnalyzerPlugin(),
   ].concat(htmlWebpackPlugins),
-  devtool: 'source-map',
+  // devtool: 'source-map',
   /**
    * 构建时显示日志统计信息，配合插件 friendly-errors-webpack-plugin
    * stats: errors-only | minimal | none | normal | verbose
@@ -214,28 +232,33 @@ const config = {
      * 1. 基础库分离: 使用 html-webpack- externals-plugin, 将 react、react-dom 基础包通过 cdn 引入，不打入 bundle 中
      * 2. 公共脚本分离: 使用 Webpack4 内置的 SplitChunksPlugin (替代 CommonsChunkPlugin 插件)
      */
-    splitChunks: {
-      minSize: 0,
-      cacheGroups: {
-        vendors: {
-          test: /(react|react-dom)/,
-          // 注意：name 指定的值需在 html-webpack-plugin 参数 chunks 中引入后才能在页面中生效
-          name: 'vendors',
-          /**
-           * chunks 参数说明:
-           * async 异步引⼊的库进⾏分离(默认)
-           * initial 同步引⼊的库进行分离
-           * all 所有引⼊的库进⾏分离(推荐)
-           */
-          chunks: 'all'
-        },
-        commons: {
-          name: 'commons',
-          minChunks: 2,
-          chunks: 'all'
-        }
-      }
-    },
+    // splitChunks: {
+    //   minSize: 0,
+    //   cacheGroups: {
+    //     /**
+    //      * DllPlugin 通常用于基础包（框架包、业务包）的分离。
+    //      * SplitChunks 虽然也可以做 DllPlugin 的事情，但是更加推荐使用 SplitChunks 去提取页面间的公共 js 文件。
+    //      * 因为使用 SplitChunks 每次去提取基础包还是需要耗费构建时间的，如果是 DllPlugin 只需要预编译一次，后面的基础包时间都可以省略掉。
+    //      */
+    //     // vendors: {
+    //     //   test: /(react|react-dom)/,
+    //     //   // 注意：name 指定的值需在 html-webpack-plugin 参数 chunks 中引入后才能在页面中生效
+    //     //   name: 'vendors',
+    //     //   /**
+    //     //    * chunks 参数说明:
+    //     //    * async 异步引⼊的库进⾏分离(默认)
+    //     //    * initial 同步引⼊的库进行分离
+    //     //    * all 所有引⼊的库进⾏分离(推荐)
+    //     //    */
+    //     //   chunks: 'all'
+    //     // },
+    //     commons: {
+    //       name: 'commons',
+    //       minChunks: 2,
+    //       chunks: 'all'
+    //     }
+    //   }
+    // },
     minimize: true,
     minimizer: [
       new TerserPlugin({
