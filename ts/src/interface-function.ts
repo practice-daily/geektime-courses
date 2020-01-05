@@ -37,7 +37,7 @@ let lib2 = getLib()
 lib2.doSomething()
 
 
-// 函数可选参数
+// 函数可选参数，可选参数必须位于必选参数之后
 function add10(x: number, y?: number) {
   return y ? x + y : x
 }
