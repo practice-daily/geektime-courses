@@ -1,5 +1,5 @@
 // T extends U ? X : Y
-// 解释：如果T可以被赋值为U，那么返回X否则返回Y
+// 含义：如果类型T可以被赋值给类型U，那么结果类型就是X类型否则为Y类型
 type TypeName<T> = 
   T extends string ? 'string' :
   T extends number ? 'number' :

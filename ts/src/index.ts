@@ -28,5 +28,8 @@ import './advanced-type-index'
 // 高级类型-映射类型
 // 高级类型-条件类型
 
+// 声明合并
+import './merge'
+
 let hello : string = 'Hello TypeScript'
 document.querySelectorAll('.app')[0].innerHTML = hello
