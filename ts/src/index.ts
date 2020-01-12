@@ -31,5 +31,11 @@ import './advanced-type-index'
 // 声明合并
 import './merge'
 
-let hello : string = 'Hello TypeScript'
+// 声明文件
+import './libs/index'
+
+let hello: string = 'Hello TypeScript'
 document.querySelectorAll('.app')[0].innerHTML = hello
+
+// es2019
+// console.log([1, 2, [3, 4]].flat())
