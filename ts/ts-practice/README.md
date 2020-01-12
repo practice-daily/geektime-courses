@@ -1,4 +1,4 @@
-TypeScript开发实战
+TypeScript开发实战 基础知识
 
 - src/ src下的所有文件，包括子目录
 - src/**/*
