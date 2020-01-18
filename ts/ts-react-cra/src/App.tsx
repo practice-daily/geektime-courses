@@ -1,25 +1,40 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, Link } from 'react-router-dom'
+import { Layout, Menu } from 'antd'
+import Employee from './employee'
 
-const App: React.FC = () => {
+import './App.css'
+
+const { Header, Content, Footer } = Layout
+
+const App: React.FC = ({ match }: any) => {
+  const defaultKey = match.url.replace('/', '') || 'employee'
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <Layout>
+      <Header>
+        <Menu
+          className="menu"
+          mode="horizontal"
+          theme="dark"
+          defaultSelectedKeys={[defaultKey]}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <Menu.Item key="employee">
+            <Link to="/employee">员工管理</Link>
+          </Menu.Item>
+          <Menu.Item key="setting">
+            <Link to="/setting">系统设置</Link>
+          </Menu.Item>
+        </Menu>
+      </Header>
+      <Content className="contentWrap">
+        <div className="content">
+          <Route path="/" exact component={Employee} />
+          <Route path="/employee" component={Employee} />
+          <Route path="/setting" />
+        </div>
+      </Content>
+      <Footer className="footer">Hello TypeScript</Footer>
+    </Layout>
   );
 }
 
