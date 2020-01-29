@@ -1,1 +1,2 @@
 export const GET_EMPLOYEE = 'GET_EMPLOYEE'
+export const CREATE_EMPLOYEE = 'CREATE_EMPLOYEE'
