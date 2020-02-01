@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Modal, Form, Input, Select, DatePicker, Icon } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
+import moment from 'moment'
 
 import { EmployeeInfo, CreateRequest, UpdateRequest } from '../interface/employee'
 
@@ -38,6 +39,7 @@ class InfoModal extends Component<Props, State> {
       if (!this.props.edit) {
         this.props.createData(param as CreateRequest, this.close)
       } else {
+        param.id = this.props.rowData.id
         this.props.updateData(param as UpdateRequest, this.close)
       }
     })
@@ -55,6 +57,16 @@ class InfoModal extends Component<Props, State> {
     const { getFieldDecorator } = this.props.form
     const { name, departmentId, hireDate, levelId } = this.props.rowData
     const title = !edit ? '添加新员工' : '修改员工'
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 4 }
+      },
+      wrapperCol: {
+        xs: { span:24 },
+        sm: { span:20 }
+      }
+    }
     return (
       <Modal
         title={title}
@@ -63,8 +75,8 @@ class InfoModal extends Component<Props, State> {
         onCancel={handleCandel}
         confirmLoading={this.state.confirmLoading}
       >
-        <Form>
-          <Form.Item>
+        <Form {...formItemLayout}>
+          <Form.Item label="员工名">
             {getFieldDecorator('name', {
               initialValue: name,
               rules: [{ required: true, whitespace: true, message: '请输入员工名' }]
@@ -76,7 +88,7 @@ class InfoModal extends Component<Props, State> {
               />
             )}
           </Form.Item>
-          <Form.Item>
+          <Form.Item label="部门">
             {getFieldDecorator('departmentId', {
               initialValue: departmentId,
               rules: [{ required: true, message: '请选择部门' }]
@@ -89,9 +101,9 @@ class InfoModal extends Component<Props, State> {
               </Select>
             )}
           </Form.Item>
-          <Form.Item>
+          <Form.Item label="入职日期">
             {getFieldDecorator('hireDate', {
-              initialValue: hireDate,
+              initialValue: hireDate ? moment(hireDate) : undefined,
               rules: [{ required: true, message: '请选择入职日期' }]
             })(
               <DatePicker
@@ -99,7 +111,7 @@ class InfoModal extends Component<Props, State> {
               />
             )}
           </Form.Item>
-          <Form.Item>
+          <Form.Item label="职级">
             {getFieldDecorator('levelId', {
               initialValue: levelId,
               rules: [{ required: true, message: '请选择职级' }]
@@ -116,6 +128,7 @@ class InfoModal extends Component<Props, State> {
               </Select>
             )}
           </Form.Item>
+          <Form.Item><code>{JSON.stringify(this.props.rowData)}</code></Form.Item>
         </Form>
       </Modal>
     )

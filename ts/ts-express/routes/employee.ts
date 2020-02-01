@@ -43,13 +43,54 @@ router.post('/createEmployee', urlencodedParser, async (req, res) => {
     VALUES ('${name}', '${departmentId}', '${hireDate}', '${levelId}')`
   try {
     let result = await query(sql)
-    // console.log(result)
+    console.log('createEmployee===', result)
     res.json({
       flag: 0,
       data: {
         key: result.insertId,
         id: result.insertId
       }
+    })
+  } catch (e) {
+    res.json({
+      flag: 1,
+      msg: e.toString()
+    })
+  }
+})
+
+router.post('/updateEmployee', async (req, res) => {
+  const { id, name, departmentId, hireDate, levelId } = req.body
+  const sql = `UPDATE t_employee
+    SET
+      name='${name}',
+      department_id=${departmentId},
+      hire_date='${hireDate}',
+      level_id=${levelId}
+    WHERE
+      id=${id}`
+  try {
+    const result = await query(sql)
+    console.log('updateEmployee===', result)
+    res.json({
+      flag: 0,
+    })
+  } catch (e) {
+    res.json({
+      flag: 1,
+      msg: e.toString()
+    })
+  }
+})
+
+router.post('/deleteEmployee', async (req, res) => {
+  const { id } = req.body
+  const sql = `DELETE FROM t_employee WHERE id=${id}`
+  try {
+    const result = await query(sql)
+    console.log('deleteEmployee===', result)
+    res.json({
+      flag: 0
     })
   } catch (e) {
     res.json({

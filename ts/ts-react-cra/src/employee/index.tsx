@@ -5,24 +5,26 @@ import { Dispatch, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import QueryForm from './QueryForm'
-import { employeeColumns } from './columns'
+import getColumns from './columns'
 import {
   EmployeeInfo,
   EmployeeRequest,
   EmployeeResponse,
   CreateRequest,
-  UpdateRequest
+  UpdateRequest,
+  DeleteRequest
 } from '../interface/employee'
 
 import InfoModal from './InfoModal'
 
-import { getEmployee, createEmployee, updateEmployee } from '../redux/employee'
+import { getEmployee, createEmployee, updateEmployee, deleteEmployee } from '../redux/employee'
 
 interface Props {
   employeeList: EmployeeResponse;
   onGetEmployee(param: EmployeeRequest, callback: () => void): void;
   onCreateEmployee(param: CreateRequest, callback: () => void): void;
   onUpdateEmployee(param: UpdateRequest, callback: () => void): void;
+  onDeleteEmployee(param: DeleteRequest): void;
 }
 
 interface State {
@@ -58,6 +60,8 @@ class Employee extends Component<Props, State> {
   handleCreate = () => {
     this.setState({
       showModal: true,
+      edit: false,
+      rowData: {}
     })
   }
 
@@ -65,6 +69,18 @@ class Employee extends Component<Props, State> {
     this.setState({
       showModal: false,
     })
+  }
+
+  handleUpdate = (record: EmployeeInfo) => {
+    this.setState({
+      showModal: true,
+      edit: true,
+      rowData: record
+    })
+  }
+
+  handleDelete = (param: DeleteRequest) => {
+    this.props.onDeleteEmployee(param)
   }
 
   render() {
@@ -86,7 +102,11 @@ class Employee extends Component<Props, State> {
           createData={onCreateEmployee}
           updateData={onUpdateEmployee}
         ></InfoModal>
-        <Table columns={employeeColumns} dataSource={employeeList} />
+        <Table
+          columns={getColumns(this.handleUpdate, this.handleDelete)}
+          dataSource={employeeList}
+        />
+        <code>{JSON.stringify(this.state.rowData)}</code>
       </>
     )
   }
@@ -98,7 +118,8 @@ const mapStateToProps = (state: any) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
   onGetEmployee: getEmployee,
   onCreateEmployee: createEmployee,
-  onUpdateEmployee: updateEmployee
+  onUpdateEmployee: updateEmployee,
+  onDeleteEmployee: deleteEmployee,
 }, dispatch)
 
 export default connect(

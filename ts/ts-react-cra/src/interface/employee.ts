@@ -31,3 +31,7 @@ export interface CreateResponse {
 export interface UpdateRequest extends CreateRequest {
   id: number;
 }
+
+export interface DeleteRequest {
+  id: number;
+}
