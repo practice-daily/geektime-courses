@@ -1,6 +1,6 @@
 export interface EmployeeRequest {
-  name: string;
-  departmentId: number | undefined;
+  name?: string;
+  departmentId?: number;
 }
 
 export interface EmployeeInfo {

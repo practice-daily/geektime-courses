@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { Form, Input, Select, Button } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
 import { EmployeeRequest } from '../interface/employee'
-
-import './index.css'
+import { department } from '../contants/options'
 
 const { Option } = Select
 
@@ -14,7 +13,7 @@ interface Props extends FormComponentProps {
 
 class QueryForm extends Component<Props, EmployeeRequest> {
   state: EmployeeRequest = {
-    name: '',
+    name: undefined,
     departmentId: undefined
   }
 
@@ -32,6 +31,13 @@ class QueryForm extends Component<Props, EmployeeRequest> {
 
   handleSubmit = () => {
     this.queryEmployee(this.state)
+  }
+
+  handleReset = () => {
+    this.setState({
+      name: undefined,
+      departmentId: undefined
+    })
   }
 
   queryEmployee = (param: EmployeeRequest) => {
@@ -67,14 +73,22 @@ class QueryForm extends Component<Props, EmployeeRequest> {
             value={this.state.departmentId}
             onChange={this.handleDepartmentChane}
           >
-            <Option value={1}>技术部</Option>
+            {/* <Option value={1}>技术部</Option>
             <Option value={2}>产品部</Option>
             <Option value={3}>市场部</Option>
-            <Option value={4}>运营部</Option>
+            <Option value={4}>运营部</Option> */}
+            {department.map((i, index) => {
+              return index > 0 ?
+              <Option value={index} key={index}>{i}</Option>
+              : null
+            })}
           </Select>
         </Form.Item>
         <Form.Item>
-          <Button type="primary" onClick={this.handleSubmit}>查询</Button>
+          <Button type="primary" icon="search" onClick={this.handleSubmit}>查询</Button>
+        </Form.Item>
+        <Form.Item>
+          <Button onClick={this.handleReset}>重置</Button>
         </Form.Item>
       </Form>
     )

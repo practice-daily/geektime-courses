@@ -5,7 +5,12 @@ import { Dispatch, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import QueryForm from './QueryForm'
+import InfoModal from './InfoModal'
+
 import getColumns from './columns'
+
+import { DOWNLOAD_EMPLOYEE_URL } from '../contants/urls'
+
 import {
   EmployeeInfo,
   EmployeeRequest,
@@ -15,9 +20,14 @@ import {
   DeleteRequest
 } from '../interface/employee'
 
-import InfoModal from './InfoModal'
+import {
+  getEmployee,
+  createEmployee,
+  updateEmployee,
+  deleteEmployee
+} from '../redux/employee'
 
-import { getEmployee, createEmployee, updateEmployee, deleteEmployee } from '../redux/employee'
+import './index.css'
 
 interface Props {
   employeeList: EmployeeResponse;
@@ -65,6 +75,10 @@ class Employee extends Component<Props, State> {
     })
   }
 
+  handleDownload = () => {
+    window.open(DOWNLOAD_EMPLOYEE_URL)
+  }
+
   handleCancel = () => {
     this.setState({
       showModal: false,
@@ -93,6 +107,7 @@ class Employee extends Component<Props, State> {
         <QueryForm getData={onGetEmployee} />
         <div className="toolbar">
           <Button type="primary" icon="plus" onClick={this.handleCreate}>添加新员工</Button>
+          <Button type="primary" icon="download" className="right" onClick={this.handleDownload}>导出</Button>
         </div>
         <InfoModal
           showModal={this.state.showModal}
