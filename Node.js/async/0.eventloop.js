@@ -1,4 +1,4 @@
-// 模拟时间循环 eventloop
+// 模拟事件循环 eventloop
 const eventloop = {
   queue: [],
   loop() {

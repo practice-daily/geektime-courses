@@ -38,7 +38,7 @@ let handler3 = (p1?: number, p2?: number) => {}
 let handler4 = (...args: number[]) => {}
 // 固定参数可以兼容可选参数、剩余参数
 handler2 = handler3
-handler2 = handler3
+handler2 = handler4
 // 可选参数不兼容固定参数、剩余参数（可设置 strictFunctionTypes: false 进行关闭）
 // handler3 = handler2 // ❌
 // handler3 = handler4 // ❌
@@ -80,7 +80,7 @@ let number: number = Fruit.Apple
 // let color: Color.Red = Fruit.Banana // ❌
 
 // 四、类兼容性
-// 构造函数、静态方法不参与比较
+// 构造函数、静态成员不参与比较
 class A1 {
   constructor(p: number, q: number) {}
   id: number = 2

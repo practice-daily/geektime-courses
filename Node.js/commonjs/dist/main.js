@@ -81,44 +81,76 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./lib/index.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./index.js");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./lib/index.js":
-/*!**********************!*\
-  !*** ./lib/index.js ***!
-  \**********************/
+/***/ "./index.js":
+/*!******************!*\
+  !*** ./index.js ***!
+  \******************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-// console.log('index start')
-let lib = __webpack_require__(/*! ./lib.js */ "./lib/lib.js")
-// console.log('index end')
-console.log(lib)
+console.log('require start')
+
+let lib = __webpack_require__(/*! ./lib.js */ "./lib.js")
+
+console.log('require end')
+console.log('require:', lib)
+console.log('\n')
+
+// require 进来的是一个引用
 lib.test = 'add'
+
+/**
+ * 可以使用 webpack 分析 commonjs 模块化规范
+ * webpack --devtool none --mode development --target node index.js
+ */
+
 
 /***/ }),
 
-/***/ "./lib/lib.js":
-/*!********************!*\
-  !*** ./lib/lib.js ***!
-  \********************/
+/***/ "./lib.js":
+/*!****************!*\
+  !*** ./lib.js ***!
+  \****************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-// console.log('lib')
+console.log('lib start')
+
+/**
+ * exports 挂载在对象下
+ * exports 可多次挂载
+ */
 exports.hello = 'world'
+
 exports.add = function (a, b) {
   return a + b
 }
 
+/**
+ * module.exports 可以不用挂载在对象下
+ * 存在 module.exports 时，exports 将失效
+ */
 module.exports = function minus (a, b) {
-  return a - b;
+  return a - b
 }
+
 setTimeout(() => {
+  console.log('=== exports start ===')
+  console.log(typeof exports)
   console.log(exports)
+  console.log('=== exports end ===')
+
+  console.log('\n')
+
+  console.log('=== module.exports start ===')
+  console.log(typeof module.exports)
+  console.log(module.exports)
+  console.log('=== module.exports end ===')
 }, 1000)
 
 

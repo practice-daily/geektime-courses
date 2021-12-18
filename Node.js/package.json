@@ -1,5 +1,5 @@
 {
-  "name": "Node.js",
+  "name": "nodejs-course",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "webpack": "./node_modules/.bin/webpack --devtool none --mode development --target node ./lib/index.js"
+    "commonjs": "cd commonjs && ../node_modules/.bin/webpack --devtool none --mode development --target node index.js"
   },
   "keywords": [],
   "author": "",

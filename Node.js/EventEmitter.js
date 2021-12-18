@@ -8,6 +8,7 @@ class GeekTime extends EventEmitter {
     }, 1000)
   }
 }
+
 const geekTime = new GeekTime
 
 // geekTime.on('NewLession', (res) => {

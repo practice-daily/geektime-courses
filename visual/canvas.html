@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    canvas {
+      width: 256px;
+      height: 256px;
+      background-color: #abcdef;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="512" height="512"></canvas>
+
+  <script>
+    // Canvas教程 https://developer.mozilla.org/zh-CN/docs/Web/API/Canvas_API/Tutorial
+    const canvas = document.getElementById('canvas')
+    const ctx = canvas.getContext('2d')
+    const rectSize = [100, 100]
+    ctx.save() // 暂存状态
+    ctx.translate(-0.5 * rectSize[0], -0.5 * rectSize[1]) // 对 Canvas 画布整体做一个平移操作
+    ctx.fillStyle = '#f00'
+    ctx.beginPath() // 调用 beginPath 指令告诉 Canvas 现在绘制的路径，开始绘制图形
+    // ctx.rect(0.5 * (canvas.width - rectSize[0]), 0.5 * (canvas.height - rectSize[1]), ...rectSize)
+    ctx.rect(0.5 * canvas.width, 0.5 * canvas.height, ...rectSize) // 调用绘图指令 rect 绘制矩形
+    // ctx.closePath()
+    ctx.fill() // 调用 fill 指令，将绘制内容真正输出到画布上
+    ctx.restore() // 恢复状态
+
+    ctx.fillStyle = '#0f0'
+    ctx.rect(50, 50, ...rectSize)
+    // ctx.fill()
+  </script>
+</body>
+</html>

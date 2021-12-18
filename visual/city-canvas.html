@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>层次关系图 Hierarchy render by canvas</title>
+  <style>
+    canvas {
+      width: 800px;
+      height: 800px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="1600" height="1600"></canvas>
+
+  <!-- <script src="https://d3js.org/d3-hierarchy.v1.min.js"></script> -->
+  <script src="./lib/d3/d3-hierarchy-3.0.1/d3-hierarchy.js"></script>
+  <script src="./city.js"></script>
+  <script>
+    // 将省份数据按照包含城市的数量降序排序
+    const regions = d3.hierarchy(cityData)
+      .sum(d => 1)
+      .sort((a, b) => b.value - a.value);
+
+    console.log('regions:', regions)
+
+    const pack = d3.pack()
+      .size([1600, 1600])
+      .padding(3);
+
+    const root = pack(regions);
+
+    // console.log('root:', root)
+
+    const canvas = document.querySelector('canvas');
+    const context = canvas.getContext('2d');
+    const TAU = 2 * Math.PI;
+
+    // 遍历数据并且根据数据内容绘制圆弧
+    function draw(ctx, node, {fillStyle = 'rgba(0, 0, 0, 0.2)', textColor = 'white'} = {}) {
+      const children = node.children;
+      const {x, y, r} = node;
+      ctx.fillStyle = fillStyle;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, TAU); // 圆心的 x、y 坐标、半径 r、起始角度和结束角度
+      ctx.fill();
+      if (children) {
+        for (let i = 0; i < children.length; i++) {
+          draw(context, children[i]);
+        }
+      } else {
+        const name = node.data.name;
+        ctx.fillStyle = textColor;
+        ctx.font = '1.5rem Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(name, x, y);
+      }
+    }
+
+    draw(context, root);
+  </script>
+</body>
+</html>
