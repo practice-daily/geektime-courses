@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Object.defineProperty</title>
+</head>
+<body>
+  <script>
+    const getDouble = n => n * 2
+    let count = 1
+    let double = getDouble(count)
+    
+    const obj = {}
+    Object.defineProperty(obj, 'count', {
+      get() {
+        console.warn('get')
+        return count
+      },
+      set(val) {
+        console.warn('set:', val)
+        count = val
+        double = getDouble(count)
+      }
+    })
+
+    console.log(obj.count, double)
+    obj.count = 2
+    console.log(obj.count, double)
+
+    // 但 defineProperty API 作为 Vue 2 实现响应式的原理，它的语法中也有一些缺陷。
+    // 比如在下面代码中，我们删除 obj.count 属性，set 函数就不会执行，double 还是之前的数值。
+    delete obj.count
+    console.log('double:', double)
+  </script>
+</body>
+</html>

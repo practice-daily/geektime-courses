@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>value setter</title>
+</head>
+<body>
+  <script>
+    const getDouble = n => n * 2
+    let _value = 1
+    let double = getDouble(_value)
+
+    // 除了 Proxy，在 Vue 3 中还有另一个响应式实现的逻辑，就是利用对象的 get 和 set 函数来进行监听，
+    // 这种响应式的实现方式，只能拦截某一个属性的修改，这也是 Vue 3 中 ref 这个 API 的实现
+    const count = {
+      get value() {
+        console.warn('get')
+        return _value
+      },
+      set value(val) {
+        console.warn('set:', val)
+        _value = val
+        double = getDouble(_value)
+      }
+    }
+
+    console.log(count.value, double)
+    count.value = 2
+    console.log(count.value, double)
+  </script>
+</body>
+</html>

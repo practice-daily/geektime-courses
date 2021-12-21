@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proxy</title>
+</head>
+<body>
+  <script>
+    const getDouble = n => n * 2
+    let count = 1
+    let double = getDouble(count)
+
+    const obj = {}
+    const proxy = new Proxy(obj, {
+      get(target, prop) {
+        console.warn('get', prop)
+        return target[prop]
+      },
+      set(target, prop, value) {
+        console.warn('set:', prop, value)
+        target[prop] = value
+        if (prop === 'count') {
+          count = value
+          double = getDouble(count)
+        }
+      },
+      deleteProperty(target, prop) {
+        console.warn('delete:', prop)
+        delete target[prop]
+        if (prop === 'count') {
+          double = NaN
+        }
+      }
+    })
+
+    console.log(proxy.count, obj.count, double)
+    proxy.count = 2
+    console.log(proxy.count, obj.count, double)
+
+    delete proxy.count
+    console.log(proxy.count, obj.count, double) // undefined NaN
+  </script>
+</body>
+</html>
