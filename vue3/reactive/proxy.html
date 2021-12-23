@@ -39,6 +39,7 @@
     proxy.count = 2
     console.log(proxy.count, obj.count, double)
 
+    //  Proxy 完善了几个 definePropery 的缺陷，比如说可以监听到属性的删除
     delete proxy.count
     console.log(proxy.count, obj.count, double) // undefined NaN
   </script>

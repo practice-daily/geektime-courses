@@ -18,14 +18,24 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watchEffect } from 'vue'
+import useStorage from '../utils/storage'
 
 function useTodos() {
   const title = ref('')
-  let todos = ref([
-    { title: 'learn vue3', done: false }
-  ])
-  
+  // let todos = ref([
+  //   { title: 'learn vue3', done: false }
+  // ])
+
+  // let todos = ref(JSON.parse(localStorage.getItem('todos_localStorage') || '[]'))
+  // watchEffect(() => {
+  //   console.log('watchEffect', todos.value)
+  //   localStorage.setItem('todos_localStorage', JSON.stringify(todos.value))
+  // })
+
+  const todos = useStorage('todos_useStorage', [ { title: 'Let\'s learn vue3', done: false } ])
+  console.log('todos_useStorage:', todos)
+
   function addTodo() {
     todos.value.push({
       title: title.value,
