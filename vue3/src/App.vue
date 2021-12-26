@@ -7,7 +7,13 @@
 <template>
   <router-link to="/">Home</router-link>
   <router-link to="/about">About</router-link>
-  <router-view></router-view>
+
+  <!-- 页面切换动画的时候，要求路由组件必须要有个根元素包裹，不然动画不生效的。 -->
+  <router-view v-slot="{ Component }">
+    <transition name="route" mode="out-in">
+      <component :is="Component"></component>
+    </transition>
+  </router-view>
 </template>
 
 <style>
@@ -15,7 +21,7 @@
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /* text-align: center; */
   color: #2c3e50;
   margin-top: 60px;
 }

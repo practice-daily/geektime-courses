@@ -1,4 +1,5 @@
 <template>
+<div>
   <h1>这是首页</h1>
 
   <div class="section-item">
@@ -25,9 +26,9 @@
 
   <div class="section-item">
     score: {{score2}}
-    <!-- <Rate2 :value="score2" @update-score="updateScore"></Rate2> -->
     <Rate2 v-model="score2"></Rate2>
   </div>
+</div>
 </template>
 
 <script setup>
@@ -51,7 +52,7 @@ const { isFullscreen, enter, exit, toggle } = useFullscreen()
 
 const themeObj = {
   'black': '#00',
-  'white': '#fff',
+  // 'white': '#fff',
   'red': '#f5222d',
   'orange': '#fa541c',
   'yellow': '#fadb14',
@@ -72,12 +73,10 @@ const changeScore = _ => {
     direction = -1
   }
   score.value += direction
+  theme.value = themeList[score.value]
 }
 
 const score2 = ref(3.5)
-function updateScore(val) {
-  score2.value = val
-}
 </script>
 
 <style scoped>
