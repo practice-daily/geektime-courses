@@ -28,11 +28,17 @@
     score: {{score2}}
     <Rate2 v-model="score2"></Rate2>
   </div>
+
+  <div class="section-item">
+    <button @click="handleStoreClick">store: {{storeCount}}</button>
+  </div>
 </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+// import { useStore } from 'vuex'
+import { useStore } from '../store/vuex'
 import Todolist from '../components/Todolist.vue'
 import Rate from '../components/Rate.vue'
 import Rate2 from '../components/Rate2.vue'
@@ -77,6 +83,11 @@ const changeScore = _ => {
 }
 
 const score2 = ref(3.5)
+
+const store = useStore()
+console.log('store:', store)
+const storeCount = computed(() => store.state.count)
+const handleStoreClick = () => store.commit('add', 2)
 </script>
 
 <style scoped>
