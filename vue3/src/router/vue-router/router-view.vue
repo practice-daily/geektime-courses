@@ -3,6 +3,12 @@
   <component :is="comp"></component>
 </template>
 
+<script>
+export default {
+  name: 'VueRouterView'
+}
+</script>
+
 <script setup>
 import { computed } from 'vue'
 import { useRouter } from './index'

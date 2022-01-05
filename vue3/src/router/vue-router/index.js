@@ -1,5 +1,7 @@
 // 手写迷你 vue-router
 import { ref, inject } from 'vue'
+import RouterLink from './router-link.vue'
+import RouterView from './router-view.vue'
 
 const ROUTER_KEY = '__router__'
 
@@ -34,6 +36,8 @@ class Router {
 
   install(app) {
     app.provide(ROUTER_KEY, this)
+    app.component(RouterLink.name, RouterLink)
+    app.component(RouterView.name, RouterView)
   }
 }
 

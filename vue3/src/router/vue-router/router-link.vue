@@ -5,6 +5,12 @@
   </a>
 </template>
 
+<script>
+export default {
+  name: 'VueRouterLink'
+}
+</script>
+
 <script setup>
 const props = defineProps({
   to: {
