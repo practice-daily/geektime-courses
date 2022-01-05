@@ -5,22 +5,22 @@
 </script>
 
 <template>
-  <!-- <router-link to="/">Home</router-link>
-  <router-link to="/about">About</router-link> -->
-  <vue-router-link to="/">Home</vue-router-link>
-  <vue-router-link to="/about">About</vue-router-link>
+  <router-link to="/">Home</router-link>
+  <router-link to="/about">About</router-link>
+  <!-- <vue-router-link to="/">Home</vue-router-link>
+  <vue-router-link to="/about">About</vue-router-link> -->
 
   <!-- 页面切换动画的时候，要求路由组件必须要有个根元素包裹，不然动画不生效的。 -->
-  <!-- <router-view v-slot="{ Component }">
+  <router-view v-slot="{ Component }">
     <transition name="route" mode="out-in">
       <component :is="Component"></component>
     </transition>
-  </router-view> -->
-  <vue-router-view v-slot="{ Component }">
+  </router-view>
+  <!-- <vue-router-view v-slot="{ Component }">
     <transition name="route" mode="out-in">
       <component :is="Component"></component>
     </transition>
-  </vue-router-view>
+  </vue-router-view> -->
 </template>
 
 <style>
