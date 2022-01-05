@@ -30,15 +30,18 @@
   </div>
 
   <div class="section-item">
-    <button @click="handleStoreClick">store: {{storeCount}}</button>
+    count: {{storeCount}}
+    double: {{storeDouble}}
+    <button @click="handleAdd">add</button>
+    <button @click="handleAsyncAdd">asyncAdd</button>
   </div>
 </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
-// import { useStore } from 'vuex'
-import { useStore } from '../store/vuex'
+import { useStore } from 'vuex'
+// import { useStore } from '../store/vuex'
 import Todolist from '../components/Todolist.vue'
 import Rate from '../components/Rate.vue'
 import Rate2 from '../components/Rate2.vue'
@@ -87,7 +90,9 @@ const score2 = ref(3.5)
 const store = useStore()
 console.log('store:', store)
 const storeCount = computed(() => store.state.count)
-const handleStoreClick = () => store.commit('add', 2)
+const storeDouble = computed(() => store.getters.double)
+const handleAdd = () => store.commit('add')
+const handleAsyncAdd = () => store.dispatch('asyncAdd', 2)
 </script>
 
 <style scoped>
