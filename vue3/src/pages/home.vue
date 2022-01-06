@@ -42,7 +42,8 @@
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 // import { useStore } from '../store/vuex'
-import Todolist from '../components/Todolist.vue'
+// import Todolist from '../components/Todolist.vue'
+import Todolist from '../components/Todolist.jsx'
 import Rate from '../components/Rate.vue'
 import Rate2 from '../components/Rate2.vue'
 import { useMouse } from '../utils/mouse'
@@ -93,6 +94,20 @@ const storeCount = computed(() => store.state.count)
 const storeDouble = computed(() => store.getters.double)
 const handleAdd = () => store.commit('add')
 const handleAsyncAdd = () => store.dispatch('asyncAdd', 2)
+
+// 统计页面一共有多少种 HTML 标签
+const ret0 = new Set([...document.querySelectorAll('*')].map(node => node.nodeName)).size
+console.log('页面 HTML 标签总数：', ret0)
+
+// 统计页面出现次数最多的 3 种 HTML 标签
+const ret1 = Object.entries([...document.querySelectorAll("*")].map(n=>n.tagName).reduce((pre, cur)=>{
+  pre[cur] = (pre[cur] || 0) + 1;
+  return pre;
+}, {})).sort((a, b)=>b[1]-a[1]).slice(0, 3)
+console.table(ret1)
+
+const ret2 = Object.entries(Array.from(document.querySelectorAll('*')).reduce((res, { tagName }) => ((tagName in res) ? (res[tagName] ++ ) : (res[tagName] = 1), res), {})).sort(([tagNameA, countA],[tagNameB, countB]) => countB - countA).map( ([tagName] ) => tagName ).slice(0,3)
+console.table(ret2)
 </script>
 
 <style scoped>
