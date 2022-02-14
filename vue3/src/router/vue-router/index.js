@@ -5,24 +5,6 @@ import RouterView from './router-view.vue'
 
 const ROUTER_KEY = '__router__'
 
-function createRouter(options) {
-  return new Router(options)
-}
-
-function useRouter() {
-  return inject(ROUTER_KEY)
-}
-
-function createWebHashHistory() {
-  function bindEvents(fn) {
-    window.addEventListener('hashchange', fn)
-  }
-  return {
-    bindEvents,
-    url: window.location.hash.slice(1) || '/'
-  }
-}
-
 class Router {
   constructor(options) {
     this.routes = options.routes
@@ -41,8 +23,26 @@ class Router {
   }
 }
 
+function createRouter(options) {
+  return new Router(options)
+}
+
+function useRouter() {
+  return inject(ROUTER_KEY)
+}
+
+function createWebHashHistory() {
+  function bindEvents(fn) {
+    window.addEventListener('hashchange', fn)
+  }
+  return {
+    bindEvents,
+    url: window.location.hash.slice(1) || '/',
+  }
+}
+
 export {
   createRouter,
   createWebHashHistory,
-  useRouter
+  useRouter,
 }

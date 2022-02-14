@@ -15,17 +15,15 @@ const props = defineProps({
   value: Number,
   theme: {
     type: String,
-    default: 'orange'
+    default: 'orange',
   },
   themeObj: {
     type: Object,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const rate = computed(() => '★★★★★☆☆☆☆☆'.slice(5 - props.value, 10 - props.value))
 
-const fontStyle = computed(() => {
-  return `color: ${props.themeObj[props.theme]};`
-})
+const fontStyle = computed(() => `color: ${props.themeObj[props.theme]};`)
 </script>

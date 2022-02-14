@@ -36,110 +36,137 @@
 </template>
 
 <script setup>
-  import { ref, computed, reactive, nextTick } from 'vue'
-  import useStorage from '../utils/storage'
+import {
+  ref, computed, reactive, nextTick,
+} from 'vue'
+import useStorage from '../utils/storage'
 
-  const title = ref('')
-  const showModal = ref(false)
+const title = ref('')
+const showModal = ref(false)
 
-  const todos = useStorage('todos_useStorage', [ { title: 'Let\'s learn vue3', done: false } ])
-  console.log('todos_useStorage:', todos)
+const todos = useStorage('todos_useStorage', [{ title: 'Let\'s learn vue3', done: false }])
+console.log('todos_useStorage:', todos)
 
-  const active = computed(() => todos.value.filter(item => !item.done).length)
-  const all = computed(() => todos.value.length)
-  const allDone = computed({
-    get() {
-      return active.value === 0
-    },
-    set(val) {
-      todos.value.forEach(item => item.done = val)
-    }
+const active = computed(() => todos.value.filter((item) => !item.done).length)
+const all = computed(() => todos.value.length)
+const allDone = computed({
+  get() {
+    return active.value === 0
+  },
+  set(val) {
+    todos.value.forEach((item) => {
+      item.done = val
+    })
+  },
+})
+
+let id = 0
+function addTodo() {
+  if (!title.value) {
+    showModal.value = true
+    setTimeout(() => {
+      showModal.value = false
+    }, 2000)
+    return
+  }
+  todos.value.push({
+    id: id++,
+    title: title.value,
+    done: false,
+  })
+  title.value = ''
+}
+
+function clear() {
+  todos.value = todos.value.filter((item) => !item.done)
+}
+
+function useAnimation() {
+  let dx = 0
+  let dy = 0
+  const targetEl = {
+    left: 0,
+    top: 0,
+  }
+  nextTick(() => {
+    const el = document.getElementById('dustbin')
+    const rect = el.getBoundingClientRect()
+    targetEl.left = rect.left
+    targetEl.top = rect.top
+    console.log('垃圾桶：', rect)
   })
 
-  let id = 0
-  function addTodo() {
-    if (!title.value) {
-      showModal.value = true
-      setTimeout(() => {
-        showModal.value = false
-      }, 2000)
-      return
-    }
-    todos.value.push({
-      id: id++,
-      title: title.value,
-      done: false
-    })
-    title.value = ''
+  const animate = reactive({
+    show: false,
+    el: null,
+  })
+
+  function beforeEnter(el) {
+    const { left, top } = animate.el.getBoundingClientRect()
+
+    // const x = window.innerWidth - left - 60
+    // const y = top - 10
+    // el.style.transform = `translate(${-x}px, ${y}px)`
+
+    el.style.left = `${left}px`
+    el.style.top = `${top}px`
+
+    dx = targetEl.left - left
+    dy = targetEl.top - top
+    console.log(`beforeEnter dx: ${dx} = ${targetEl.left} - ${left}`)
+    console.log(`beforeEnter dy: ${dy} = ${targetEl.top} - ${top}`)
+  }
+  function enter(el, done) {
+    document.body.offsetHeight // 手动触发一次重绘，开始动画
+    el.addEventListener('transitionend', done)
+    // el.style.transform = 'translate(0, 0)'
+    el.style.transform = `translate(${dx}px, ${dy}px)`
+    // setTimeout(done, 500)
+  }
+  function afterEnter(el) {
+    animate.show = false
+    el.style.display = 'none'
   }
 
-  function clear() {
-    todos.value = todos.value.filter(item => !item.done)
-  }
-
-  function useAnimation() {
-    let dx = 0
-    let dy = 0
-    const targetEl = {
-      left: 0,
-      top: 0,
-    }
+  function removeTodo(e, i) {
+    animate.el = e.target
+    animate.show = true
+    // todos.value.splice(i, 1)
     nextTick(() => {
-      const el = document.getElementById('dustbin')
-      const rect = el.getBoundingClientRect()
-      targetEl.left = rect.left
-      targetEl.top = rect.top
-      console.log('垃圾桶：', rect)
+      todos.value.splice(i, 1)
     })
-
-    const animate = reactive({
-      show: false,
-      el: null
-    })
-
-    function beforeEnter(el) {
-      const { left, top } = animate.el.getBoundingClientRect()
-
-      // const x = window.innerWidth - left - 60
-      // const y = top - 10
-      // el.style.transform = `translate(${-x}px, ${y}px)`
-
-      el.style.left = `${left}px`
-      el.style.top = `${top}px`
-
-      dx = targetEl.left - left
-      dy = targetEl.top - top
-      console.log(`beforeEnter dx: ${dx} = ${targetEl.left} - ${left}`)
-      console.log(`beforeEnter dy: ${dy} = ${targetEl.top} - ${top}`)
-    }
-    function enter(el, done) {
-      document.body.offsetHeight // 手动触发一次重绘，开始动画
-      el.addEventListener('transitionend', done)
-      // el.style.transform = 'translate(0, 0)'
-      el.style.transform = `translate(${dx}px, ${dy}px)`
-      // setTimeout(done, 500)
-    }
-    function afterEnter(el) {
-      animate.show = false
-      el.style.display = 'none'
-    }
-
-    function removeTodo(e, i) {
-      animate.el = e.target
-      animate.show = true
-      // todos.value.splice(i, 1)
-      nextTick(() => {
-        todos.value.splice(i, 1)
-      })
-    }
-
-    return { animate, beforeEnter, enter, afterEnter, removeTodo }
   }
 
-  const { animate, beforeEnter, enter, afterEnter, removeTodo } = useAnimation()
+  return {
+    animate, beforeEnter, enter, afterEnter, removeTodo
+  }
+}
+
+const {
+  animate, beforeEnter, enter, afterEnter, removeTodo
+} = useAnimation()
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+$padding:10px;
+$white:#fff;
+
+ul {
+  // width:500px;
+  // margin:0 auto;
+  padding: 0;
+  li {
+    &:hover {
+      cursor: pointer;
+    }
+    list-style-type: none;
+    margin-bottom: $padding;
+    padding: $padding;
+    background: $white;
+    box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+  }
+}
+
 .done {
   text-decoration: line-through;
   color: #999;

@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: 'VueRouterLink'
+  name: 'VueRouterLink',
 }
 </script>
 
@@ -15,7 +15,7 @@ export default {
 const props = defineProps({
   to: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 </script>
