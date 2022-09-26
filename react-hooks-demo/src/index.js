@@ -19,6 +19,8 @@ import ReducerLazyInit from './hooks/reducer/lazyInit';
 import Callback from './hooks/callback';
 import Memo from './hooks/memo.js';
 
+import IntervalRef from './hooks/ref';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -56,6 +58,11 @@ root.render(
       <div className='section-panel'>
         <div className='panel-title'>useMemo 缓存计算结果</div>
         <Memo></Memo>
+      </div>
+
+      <div className='section-panel'>
+        <div className='panel-title'>useRef</div>
+        <IntervalRef></IntervalRef>
       </div>
     </App>
   </React.StrictMode>
