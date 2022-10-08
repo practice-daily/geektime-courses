@@ -10,6 +10,7 @@ export const themes = {
     background: '#222'
   },
 }
+
 const ThemeContext = React.createContext(themes.light)
 
 export default ThemeContext

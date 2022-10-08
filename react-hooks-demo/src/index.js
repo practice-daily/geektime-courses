@@ -10,9 +10,6 @@ import ClassDemo from './class/demo'
 import EffectIndex from './hooks/effect';
 // import RequestDemo from './hooks/axios'
 
-import ThemeContext, { themes } from './hooks/context/themeContext';
-import ContextIndex from './hooks/context'
-
 import ReducerIndex from './hooks/reducer';
 import ReducerLazyInit from './hooks/reducer/lazyInit';
 
@@ -20,6 +17,11 @@ import Callback from './hooks/callback';
 import Memo from './hooks/memo.js';
 
 import IntervalRef from './hooks/ref';
+
+import ContextIndex from './hooks/context'
+
+import Counter from './hooks/custom/counter';
+import UserList from './hooks/custom/userList';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -38,13 +40,6 @@ root.render(
       {/* <RequestDemo /> */}
 
       <div className='section-panel'>
-        <div className='panel-title'>ThemeContext</div>
-        <ThemeContext.Provider value={themes.dark}>
-          <ContextIndex></ContextIndex>
-        </ThemeContext.Provider>
-      </div>
-
-      <div className='section-panel'>
         <div className='panel-title'>ReducerIndex & ReducerLazyInit</div>
         <ReducerIndex></ReducerIndex>
         <ReducerLazyInit></ReducerLazyInit>
@@ -61,8 +56,19 @@ root.render(
       </div>
 
       <div className='section-panel'>
-        <div className='panel-title'>useRef</div>
+        <div className='panel-title'>useRef 在多次渲染之间共享数据</div>
         <IntervalRef></IntervalRef>
+      </div>
+
+      <div className='section-panel'>
+        <div className='panel-title'>useContext 定义全局状态</div>
+        <ContextIndex></ContextIndex>
+      </div>
+
+      <div className='section-panel'>
+        <div className='panel-title'>自定义 Hook</div>
+        <Counter></Counter>
+        <UserList></UserList>
       </div>
     </App>
   </React.StrictMode>
