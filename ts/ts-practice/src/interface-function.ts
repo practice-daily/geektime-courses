@@ -1,24 +1,25 @@
-// 函数类型接口(1,2,3只是定义了函数类型，需要自己具体实现)
-
-// 0. 函数声明
+// 函数声明
 function add11(x: number, y: number) {
   return x + y
 }
 
+// 定义函数类型的三种方式
 // 1. 通过变量声明
 let add22: (x: number, y: number) => number
 add22 = (a, b) => a + b
 
 // 2. 通过接口声明
 interface Add33 {
+  // 用接口定义函数 ，必须有个匿名函数，接口名称就是这个函数类型的名称
   (x: number, y: number): number
 }
+let add33: Add33 = (a, b) => a + b
 
 // 3. 通过类型别名声明
 type Add44 = (x: number, y: number) => number
 let add44: Add44 = (a, b) => a + b
 
-// 混合接口
+// 混合接口: 一般是为第三方类库写声明文件时会用到，很多类库名称可以直接当函数调用，也可以有些属性和方法。
 interface Lib {
   (): void;
   version: string;
@@ -42,7 +43,7 @@ function add10(x: number, y?: number) {
   return y ? x + y : x
 }
 // 函数默认参数
-function add12(x: number, y = 0, z: number, q = 1) {
+function add12(x: number, y: number = 0, z: number, q = 1) {
   return x + y + z + q
 }
 console.log('add12:', add12(1, 2, 3))
@@ -74,7 +75,6 @@ function add14(...rest: any[]): any {
 }
 console.log('add14:', add14(1, 2, 3, 4, 5))
 console.log('add14:', add14('1', '2', '3', '4', '5'))
-
 
 /**
  * type类型与interface接口的区别
