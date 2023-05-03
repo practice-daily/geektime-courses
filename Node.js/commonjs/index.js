@@ -1,13 +1,13 @@
-// console.log('start require')
+console.log('start require')
 
-// let lib = require('./lib.js')
+let lib = require('./lib.js')
 
-// console.log('end require')
-// console.log('require:', lib)
-// console.log('\n')
+console.log('end require')
+console.log('require:', lib)
+console.log('\n')
 
-// // require 进来的是一个引用
-// lib.test = 'add'
+// require 进来的是一个引用
+lib.test = 'add'
 
 // setTimeout(() => {
 //   console.log()
@@ -28,20 +28,20 @@
 //  */
 
 
-function changeAgeAndRef(person) {
-  person.age = 30
-  person = {
-    name: 'world',
-    age: 40
-  }
-  return person
-}
+// function changeAgeAndRef(person) {
+//   person.age = 30
+//   person = {
+//     name: 'world',
+//     age: 40
+//   }
+//   return person
+// }
 
-var person = {
-  name: 'hello',
-  age: 18
-}
+// var person = {
+//   name: 'hello',
+//   age: 18
+// }
 
-var person2 = changeAgeAndRef(person)
-console.log(person) // { name: 'hello', age: 30 }
-console.log(person2) // { name: 'world', age: 40 }
+// var person2 = changeAgeAndRef(person)
+// console.log(person) // { name: 'hello', age: 30 }
+// console.log(person2) // { name: 'world', age: 40 }

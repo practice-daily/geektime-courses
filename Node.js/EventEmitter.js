@@ -11,8 +11,10 @@ class GeekTime extends EventEmitter {
 
 const geekTime = new GeekTime
 
+console.log(geekTime.on === geekTime.addListener) // true
+
 // geekTime.on('NewLession', (res) => {
-//   console.log('yeah!', res)
+//   console.log('yeah~', res)
 // })
 
 geekTime.addListener('NewLession', (res) => {

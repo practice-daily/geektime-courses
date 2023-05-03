@@ -11,16 +11,25 @@ const game = require('./lib')
 // const result = game(playerAction)
 // console.log(result)
 
-let count = 0
+let playerCount = 0
+let computerCount = 0
+let totalCount = 0
 process.stdin.on('data', (buffer) => {
   const playerAction = buffer.toString().trim()
-  // console.log('playerAction---', playerAction)
+  // console.log('stdin playerAction:', playerAction)
   const result = game(playerAction)
-  console.log(result)
-  if (result === 1) {
-    count++
+  if (result === -1) {
+    playerCount++
+  } else if (result === 1) {
+    computerCount++
   }
-  if (count === 3) {
+  totalCount++
+  console.table([
+    { name: '玩家赢', count: playerCount },
+    { name: '机器人赢', count: computerCount },
+    { name: '总次数', count: totalCount },
+  ])
+  if (playerCount === 3) {
     console.log('你太厉害了，我不玩了！')
     process.exit()
   }

@@ -6,7 +6,7 @@
  * 即 module.exports 和 exports 是等价的（前提是：不去重新赋值改变它们指向的内存地址）。
  * 
  * require 导入的本质上是 module.exports。
- * 这就产生了一个问题，当 module.exports 和 exports 指向的不是同一块内存时，exports 的内容就会失效。
+ * 这就产生了一个问题，当 module.exports 或 exports 重新赋值后指向的不是同一块内存时，exports 的内容就会失效。
  * 
  * 参考: https://stackoverflow.com/questions/7137397/module-exports-vs-exports-in-node-js
  */
@@ -20,24 +20,25 @@ exports.add = function (a, b) {
 }
 
 exports = {
-  'hahaha': 'hehehe'
+  'hi': '重新赋值导致引用与 module.exports 不再指向同一地址'
 }
 
-// module.exports.node = 'js'
-// module.exports = 'Hello World!'
+module.exports.node = 'js'
+
+// module.exports = '重新赋值导致引用与 exports 不再指向同一地址'
+
 // module.exports = function minus (a, b) {
 //   return a - b
 // }
 
-
 setTimeout(() => {
-  console.log('=== lib.js: exports start ===')
-  console.log(typeof exports, exports)
-  console.log('=== lib.js: exports end ===')
+  console.group('=== setTimeout lib.js: exports ===')
+  console.log('exports:', typeof exports, exports)
+  console.groupEnd('=== setTimeout lib.js: exports ===')
 
   console.log('\n')
 
-  console.log('=== lib.js: module.exports start ===')
-  console.log(typeof module.exports, module.exports)
-  console.log('=== lib.js: module.exports end ===')
+  console.group('=== setTimeout lib.js: module.exports ===')
+  console.log('module.exports:', typeof module.exports, module.exports)
+  console.groupEnd('=== setTimeout lib.js: module.exports ===')
 }, 1000)
