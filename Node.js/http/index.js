@@ -1,9 +1,10 @@
 const http = require( 'http')
 const fs = require('fs')
+const path = require('path')
 // const url = require('url')
 // const querystring = require('querystring')
 
-const game = require('./game')
+const game = require('../game/index')
 
 let playerWonCount = 0
 let playerLastAction = ''
@@ -36,7 +37,7 @@ http.createServer((req, res) => {
   if (pathname === '/') {
     res.writeHead(200)
     // res.end('Hello World!')
-    fs.createReadStream(__dirname + '/game.html').pipe(res)
+    fs.createReadStream(path.join(__dirname, '../game/index.html')).pipe(res)
     return
   }
 
