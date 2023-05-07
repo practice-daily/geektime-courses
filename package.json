@@ -1,0 +1,20 @@
+{
+  "name": "geektime-courses",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Node.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/practice-daily/geektime-courses.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/practice-daily/geektime-courses/issues"
+  },
+  "homepage": "https://github.com/practice-daily/geektime-courses#readme"
+}

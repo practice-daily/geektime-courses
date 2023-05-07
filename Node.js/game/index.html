@@ -19,6 +19,7 @@
   <button id="scissor" style="height: 40px; width: 80px">剪刀</button>
   <button id="paper" style="height: 40px; width: 80px">布</button>
   <button id="reset" style="height: 40px; width: 80px">重来</button>
+  <button id="concurrent" style="height: 40px; width: 80px">并发</button>
 </body>
 <script>
   const $button = {
@@ -32,12 +33,26 @@
 
   Object.keys($button).forEach(key => {
     $button[key].addEventListener('click', function () {
-      fetch(`http://${location.host}/game?action=${key}`)
-        .then((res) => res.text())
-        .then((text) => {
-          $output.innerHTML += text + '<br/>';
-          $output.scrollTop = $output.scrollHeight
-        })
+      doGame(key)
+    })
+  })
+
+  function doGame(key) {
+    fetch(`http://${location.host}/game?action=${key}`)
+      .then(res => res.text())
+      .then(text => {
+        $output.innerHTML += text + '<br/>';
+        $output.scrollTop = $output.scrollHeight
+      })
+  }
+
+  const actions = ['rock', 'scissor', 'paper']
+  document.getElementById('concurrent').addEventListener('click', () => {
+    Array(8).fill(0).forEach(item => {
+      const index = Math.floor(Math.random() * actions.length)
+      const action = actions[index]
+      console.log(item, action)
+      doGame(action)
     })
   })
 </script>
