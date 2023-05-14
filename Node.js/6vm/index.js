@@ -12,6 +12,7 @@ const vm = require('node:vm')
  * 2. include 子模板
  */
 
+// xss 过滤、模板 helper 函数的实现 ----------------------------------
 // const ret = vm.runInNewContext(
 //   '_(`<script>alert(${name} + ${helper.dateTime()})</script>`)',
 //   {
@@ -37,7 +38,7 @@ const vm = require('node:vm')
 // console.log(ret)
 
 
-// ----------------------------------
+// include 实现1 ----------------------------------
 // const templateMap = {
 //   templateA: '`<h1>${include("templateB")}</h1>`',
 //   templateB: '`<p>Hello Node.js! ${name}</p>`',
@@ -47,7 +48,7 @@ const vm = require('node:vm')
 //   name: 'cicada',
 //   include(name) {
 //     const code = templateMap[name]
-//     return vm .runInNewContext(code, context)
+//     return vm.runInNewContext(code, context)
 //   },
 // }
 
@@ -59,7 +60,7 @@ const vm = require('node:vm')
 // console.log(ret)
 
 
-// ----------------------------------
+// include 实现2 ----------------------------------
 // const templateMap = {
 //   templateA: '`<h1>${include("templateB")}</h1>`',
 //   templateB: '`<p>Hello Node.js! ${name}</p>`',
@@ -87,7 +88,7 @@ const vm = require('node:vm')
 // console.log(ret)
 
 
-// ----------------------------------
+// include 实现3 ----------------------------------
 const templateMap = {
   templateA: '`<h1>${include("templateB")}</h1>`',
   templateB: '`<p>Hello Node.js! ${name}</p>`',
