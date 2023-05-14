@@ -1,31 +1,30 @@
-// ejs
-
 const vm = require('node:vm')
 
-// const contextObject = {
-//   animal: 'cat',
-//   count: 2,
-// }
+// const user = { name: 'cicada' }
+// const template = '<h2><%= user.name ></h2>'
+// ejs.render(template, user)
+
+/**
+ * 使用 ES6 模板字符串实现模板引擎
+ * 
+ * 通过 vm 模块编译 JavaScript 形成函数
+ * 1. xss 过滤、模板 helper 函数
+ * 2. include 子模板
+ */
 
 // const ret = vm.runInNewContext(
-//   `count += 1; name = "hello"`,
-//   contextObject
-// )
-// console.log(ret)
-// console.log(contextObject)
-
-// 使用 ES6 模板字符串实现模板引擎
-// const ret = vm.runInNewContext(
-//   '_(`<h1>${name} ${helper.dateTime()}</h1>`)',
+//   '_(`<script>alert(${name} + ${helper.dateTime()})</script>`)',
 //   {
 //     name: 'Hello Node.js',
+//     // xss
 //     _: function(markup) {
-//       console.log('markup:', markup)
 //       if (!markup) return ''
-//       if (markup === '<') return '&lt;'
-//       if (markup === '>') return '&gt;'
-//       if (markup === '/') return '&hh;'
-//       return markup
+//       return String(markup)
+//         .replace(/&/g, '&amp;')
+//         .replace(/</g, '&lt;')
+//         .replace(/>/g, '&lt;')
+//         .replace(/'/g, '&#39;')
+//         .replace(/"/g, '&quot;')
 //     },
 //     helper: {
 //       dateTime(time) {
@@ -61,6 +60,34 @@ const vm = require('node:vm')
 
 
 // ----------------------------------
+// const templateMap = {
+//   templateA: '`<h1>${include("templateB")}</h1>`',
+//   templateB: '`<p>Hello Node.js! ${name}</p>`',
+// }
+
+// const context = {
+//   name: 'squirrel',
+//   include(name) {
+//     return templateMap[name]()
+//   }
+// }
+
+// Object.keys(templateMap).forEach(key => {
+//   const code = templateMap[key]
+//   templateMap[key] = function compile() {
+//     return vm.runInNewContext(code, context)
+//   }
+// })
+
+// const ret = vm.runInNewContext(
+//   '`${include("templateA")}`',
+//   context
+// )
+
+// console.log(ret)
+
+
+// ----------------------------------
 const templateMap = {
   templateA: '`<h1>${include("templateB")}</h1>`',
   templateB: '`<p>Hello Node.js! ${name}</p>`',
@@ -74,15 +101,8 @@ const context = {
 }
 
 Object.keys(templateMap).forEach(key => {
-  const code = templateMap[key]
-  templateMap[key] = function compile() {
-    return vm.runInNewContext(code, context)
-  }
+  const temp = templateMap[key]
+  templateMap[key] = vm.runInNewContext(`(function () {return ${temp}})`, context)
 })
 
-const ret = vm.runInNewContext(
-  '`${include("templateA")}`',
-  context
-)
-
-console.log(ret)
+console.log(templateMap['templateA']())
